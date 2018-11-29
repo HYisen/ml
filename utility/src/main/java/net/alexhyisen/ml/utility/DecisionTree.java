@@ -10,7 +10,7 @@ public class DecisionTree implements Sage {
     @Override
     public void train(List<String[]> trainData) {
         tree = new Node(trainData);
-        tree.print(0);
+        tree.print("0",0);
     }
 
     @Override

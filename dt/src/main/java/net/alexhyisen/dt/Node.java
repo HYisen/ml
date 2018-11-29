@@ -66,19 +66,19 @@ public class Node {
         }
     }
 
-    public void print(int depth) {
+    public void print(String type, int depth) {
         var sb = new StringBuilder();
         for (int i = 0; i < depth; i++) {
             sb.append("  ");
         }
-        sb.append(attr).append("(").append(data.size()).append(")");
+        sb.append(String.format("%s-%d(%d)", type, attr, data.size()));
         if (attr == 0) {
-            var match = data.stream().filter(v -> type.equals(v[0])).count();
-            sb.append(" ").append(type).append(" ").append(String.format("%5.3f", ((float) match) / data.size()));
+            var match = data.stream().filter(v -> getType().equals(v[0])).count();
+            sb.append(String.format(" %s %5.3f", getType(), ((float) match) / data.size()));
         }
         System.out.println(sb.toString());
         if (attr != 0) {
-            leaves.values().forEach(v -> v.print(depth + 1));
+            leaves.forEach((k, v) -> v.print(k, depth + 1));
         }
     }
 
