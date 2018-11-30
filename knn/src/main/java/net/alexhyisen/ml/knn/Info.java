@@ -23,7 +23,7 @@ public class Info {
             }
         }
         var result = neighbours.stream().collect(Collectors.groupingBy(v -> v[0], Collectors.counting()));
-        var sb = new StringBuilder("find " + Arrays.toString(orig));
+        var sb = new StringBuilder("find " + Arrays.toString(orig)+" at distance "+minDist);
         result.forEach((k, v) -> sb.append(String.format("\t%s%4d(%5.3f)", k, v, ((float) v) / neighbours.size())));
         System.out.println(sb.toString());
         return result.entrySet().stream().max(Comparator.comparing(Map.Entry::getValue)).orElseThrow().getKey();
