@@ -18,6 +18,7 @@ public class Info {
             if (dist < minDist) {
                 minDist = dist;
                 neighbours.clear();
+                neighbours.add(one);
             } else if (dist == minDist) {
                 neighbours.add(one);
             }
