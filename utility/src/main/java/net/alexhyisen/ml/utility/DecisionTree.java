@@ -14,17 +14,12 @@ public class DecisionTree implements Sage {
     }
 
     @Override
-    public void test(List<String[]> testData) {
-        var cnt = testData.stream().filter(v -> {
-            var node = tree;
-            int attr;
-            while ((attr = node.getAttr()) != 0) {
-                node = node.getLeaves().get(v[attr]);
-            }
-            return v[0].equals(node.getType());
-        }).count();
-
-        final float accuracy = ((float) cnt) / testData.size();
-        System.out.println(String.format("%d of %d, rate %5.3f", cnt, testData.size(), accuracy));
+    public boolean test(String[] one) {
+        var node = tree;
+        int attr;
+        while ((attr = node.getAttr()) != 0) {
+            node = node.getLeaves().get(one[attr]);
+        }
+        return one[0].equals(node.getType());
     }
 }
