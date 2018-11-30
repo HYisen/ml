@@ -1,6 +1,6 @@
 package net.alexhyisen.ml.utility;
 
-import net.alexhyisen.dt.Node;
+import net.alexhyisen.ml.dt.Node;
 
 import java.util.List;
 

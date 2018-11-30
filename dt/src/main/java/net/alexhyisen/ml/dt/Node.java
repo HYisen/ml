@@ -1,4 +1,4 @@
-package net.alexhyisen.dt;
+package net.alexhyisen.ml.dt;
 
 import java.util.List;
 import java.util.Map;
