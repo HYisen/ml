@@ -30,5 +30,9 @@ public class Mushroom {
         var dt = new DecisionTree();
         dt.train(rest);
         dt.test(test);
+
+        var knn = new KNearestNeighbour();
+        knn.train(rest);
+        knn.test(test);
     }
 }
