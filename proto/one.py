@@ -1,77 +1,11 @@
-from random import shuffle
+from proto.util import *
 
-data = []
-name = []
-age = []
+data, _ = load()
 
-
-def scan(data, col, step):
-    stat = {12: 100}
-    for attr in [row[col] for row in data]:
-        # print(attr)
-        cls = int(int(attr) / step)
-        # print(cls)
-        if cls not in stat:
-            stat[cls] = 0
-        stat[cls] += 1
-    for key in sorted(stat):
-        print(f'{key:3d}:{stat[key]:5d}')
-
-
-def show(data, limit=0):
-    for index, row in enumerate(data):
-        if limit != 0 and index >= limit:
-            break
-        print(row)
-
-
-with open('../data/bank.csv') as fp:
-    for linage, line in enumerate(fp):
-        split = line.split(';')
-        if linage == 0:
-            name = split
-            continue
-        print(f'{linage} => {line}')
-        data.append(split)
-        age.append(split[0])
-
-d = {}
-for i in range(8):
-    col = []
-    for line in data:
-        col.append(line[i])
-    # print(f'{name[i]}=>{col}\n')
-    d[name[i]] = col
-
-# scan(data, 0, 10)
+scan(data, 0, 10)
 # scan(data, 5, 1000)
 
-good = []
-
-for line in data:
-    left = [line[k] for k in range(8)]
-    item = int(line[0])
-    if item < 30:
-        left[0] = "below"
-    elif item < 40:
-        left[0] = "30s"
-    elif item < 50:
-        left[0] = "40s"
-    else:
-        left[0] = "above"
-
-    item = int(line[5])
-    if item < 0:
-        left[5] = "minus"
-    elif item < 1000:
-        left[5] = "low"
-    else:
-        left[5] = "high"
-
-    good.append(left)
-
-# for attr in [line[2] for line in data]:
-#     print(attr)
+good, _ = load(bank_mapper)
 
 show(good, 10)
 shuffle(good)
