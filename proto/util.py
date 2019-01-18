@@ -89,3 +89,8 @@ def exam(test_data, think_method):
                 desc = 'passN'
         statics[desc] += 1
     print(statics)
+    print('{0:20s}{1:20s}{2:20s}'.format('', 'actual_positive', 'actual_negative'))
+    print('{0:20s}{1:20s}{2:20s}'.format('think_positive', str(statics['passP']), str(statics['failP'])))
+    print('{0:20s}{1:20s}{2:20s}'.format('think_negative', str(statics['failN']), str(statics['passN'])))
+    print(f"ratio = {statics['failP'] / statics['passP']:5.3f}")
+    print(f"rate  = {statics['passP'] / (statics['passP'] + statics['failN']):5.3f}")
