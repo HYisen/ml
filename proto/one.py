@@ -8,52 +8,34 @@ scan(data, 0, 10)
 good, _ = load(bank_mapper)
 
 show(good, 10)
-shuffle(good)
 
-size = 1000
-test = good[:size]
-train = good[size:]
+test, train = divide_data(good, 1000)
 
-success = 0
-statics = {'passP': 0, 'failP': 0, 'passN': 0, 'failN': 0}
-for one in test:
+
+def knn(item):
     neighbours = []
-    minDist = 8
-    for two in train:
-        cnt = 7
-        for index in range(7):
-            if two[index] == one[index]:
-                cnt -= 1
-        if cnt < minDist:
-            minDist = cnt
-            neighbours.clear()
-            neighbours.append(two)
-        elif cnt == minDist:
-            neighbours.append(two)
+    min_dist = len(item)
+    for one in train:
+        new_dist = len(item) - 1
+        for idx, two in enumerate(one):
+            if idx == len(one) - 1:
+                continue
+            if two == item[idx]:
+                new_dist -= 1
+            if new_dist <= min_dist:
+                if new_dist < min_dist:
+                    min_dist = new_dist
+                    neighbours.clear()
+                neighbours.append(one)
     count = 0
-    for line in neighbours:
-        if line[7] == '"yes"':
+    for neighbour in neighbours:
+        if neighbour[-1] == 'yes':
             count += 1
     rate = count / len(neighbours)
-    desc = "error"
-    if rate > 0.5:
-        if one[7] == '"yes"':
-            desc = 'passP'
-        else:
-            desc = 'failP'
-    else:
-        if one[7] == '"yes"':
-            desc = 'failN'
-        else:
-            desc = 'passN'
-    statics[desc] += 1
 
-    if desc != 'passN':
-        print(f'dist {minDist} with {len(neighbours)} {desc} yesRate={rate}')
+    print(f'dist {min_dist} with {len(neighbours)} posRate={rate:5.3f}')
 
-    if (rate > 0.5 and one[7] == '"yes"') or (rate < 0.5 and one[7] == '"no"'):
-        success += 1
-    # print(neighbours)
+    return 'yes' if rate > 0.5 else 'no'
 
-print(f'{success} in {len(test)}')
-print(statics)
+
+exam(test, knn)
