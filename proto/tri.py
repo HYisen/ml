@@ -1,7 +1,7 @@
 import tensorflow as tf
 from proto.util import *
 
-orig, _ = load(bank_mapper)
+orig, _ = load(bank_mapper, True)
 mapper = gen_mapper(orig)
 test, train = divide_data(orig, 1000)
 x_test, y_test = map_to_vector(test, mapper)
@@ -19,7 +19,7 @@ model.compile(optimizer='adam',
               loss='sparse_categorical_crossentropy',
               metrics=['accuracy'])
 
-model.fit(x_train, y_train, epochs=5)
+model.fit(x_train, y_train, epochs=10)
 model.evaluate(x_test, y_test)
 
 

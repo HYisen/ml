@@ -2,14 +2,17 @@ from proto.util import *
 
 data, _ = load()
 
-scan(data, 0, 10)
+# scan(data, 0, 10)
+# print('age|balance')
 # scan(data, 5, 1000)
 
 good, _ = load(bank_mapper)
 
-show(good, 10)
+# show(good, 10)
 
 test, train = divide_data(good, 1000)
+
+stat = (collections.defaultdict(int), collections.defaultdict(int))
 
 
 def knn(item):
@@ -33,9 +36,14 @@ def knn(item):
             count += 1
     rate = count / len(neighbours)
 
-    print(f'dist {min_dist} with {len(neighbours)} posRate={rate:5.3f}')
+    # print(f'dist {min_dist} with {len(neighbours)} posRate={rate:5.3f}')
+    stat[0][min_dist] += 1
+    stat[1][int(len(neighbours) / 10)] += 1
 
     return 'yes' if rate > 0.5 else 'no'
 
 
 exam(test, knn)
+
+print(stat[0])
+print(sorted(stat[1].items()))

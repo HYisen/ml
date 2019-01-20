@@ -1,9 +1,8 @@
-import collections
 from math import log2
 
 from proto.util import *
 
-orig, name = load(bank_mapper)
+orig, name = load(bank_mapper,True)
 test, train = divide_data(orig, 1000)
 
 
@@ -70,7 +69,7 @@ def print_tree(depth, node, attr):
 
 tree = build_tree(train)
 
-print_tree(0, tree, 'root')
+# print_tree(0, tree, 'root')
 
 
 def dt(data):
@@ -81,7 +80,7 @@ def dt(data):
             break
         node = next_node
     rate = node[2]
-    print(f'{rate:5.3f} of {len(node[1])}')
+    # print(f'{rate:5.3f} of {len(node[1])}')
     return 'yes' if rate > 0.5 else 'no'
 
 
