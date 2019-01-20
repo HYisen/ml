@@ -4,10 +4,6 @@ import random
 import numpy as np
 
 
-def echo():
-    print('Hello world')
-
-
 def scan(data, col, step):
     stat = {12: 100}
     for attr in [row[col] for row in data]:
@@ -28,14 +24,16 @@ def show(data, limit=0):
         print(row)
 
 
-def load(mapper=lambda v: v):
+def load(mapper=lambda v: v, use_full=False):
     data = []
     name = []
 
-    with open('../data/bank.csv') as fp:
+    path = '../data/bank.csv' if not use_full else '../data/bank-full.csv'
+
+    with open(path) as fp:
         for linage, line in enumerate(fp):
             line = line.strip('\n')
-            print(f'{linage} => {line}')
+            # print(f'{linage} => {line}')
             split = line.split(';')
             for idx, item in enumerate(split):
                 split[idx] = item.strip('"')
@@ -97,6 +95,8 @@ def exam(test_data, think_method):
     print('{0:20s}{1:20s}{2:20s}'.format('think_negative', str(statics['failN']), str(statics['passN'])))
     print(f"ratio = {statics['failP'] / statics['passP']:5.3f}")
     print(f"rate  = {statics['passP'] / (statics['passP'] + statics['failN']):5.3f}")
+    total = statics['passP'] + statics['failP'] + statics['passN'] + statics['failN']
+    print(f"profit= {1000 * statics['passP'] - 1 * (statics['passP'] + statics['failP']) - 0.01 * total :.2f}")
 
 
 def group_attr(data):
@@ -132,9 +132,3 @@ def map_to_vector(orig, mapper):
     x = [mapper(line) for line in orig]
     y = [(1 if val == 'yes' else 0) for val in np.array(orig)[:, -1]]
     return np.array(x), np.array(y)
-
-
-data, name = load(bank_mapper)
-
-mapper = gen_mapper(data)
-x, y = map_to_vector(data, mapper)
