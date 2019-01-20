@@ -1,4 +1,7 @@
+import collections
 import random
+
+import numpy as np
 
 
 def echo():
@@ -94,3 +97,44 @@ def exam(test_data, think_method):
     print('{0:20s}{1:20s}{2:20s}'.format('think_negative', str(statics['failN']), str(statics['passN'])))
     print(f"ratio = {statics['failP'] / statics['passP']:5.3f}")
     print(f"rate  = {statics['passP'] / (statics['passP'] + statics['failN']):5.3f}")
+
+
+def group_attr(data):
+    col = collections.defaultdict(int)
+    for row in data:
+        col[row] += 1
+    return collections.OrderedDict(sorted(col.items()))
+
+
+def gen_mapper(orig):
+    orig = np.array(orig)
+    stat = []
+    for i in range(orig.shape[1] - 1):
+        col = group_attr(orig[:, i])
+        cnt = 0
+        for key in col:
+            col[key] = cnt
+            cnt += 1
+        stat.append(col)
+
+    def mapper(line):
+        rtn = []
+        for j in range(len(stat)):
+            vec = np.zeros(len(stat[j]))
+            vec[stat[j][line[j]]] = 1
+            rtn.extend(vec)
+        return rtn
+
+    return mapper
+
+
+def map_to_vector(orig, mapper):
+    x = [mapper(line) for line in orig]
+    y = [(1 if val == 'yes' else 0) for val in np.array(orig)[:, -1]]
+    return np.array(x), np.array(y)
+
+
+data, name = load(bank_mapper)
+
+mapper = gen_mapper(data)
+x, y = map_to_vector(data, mapper)
